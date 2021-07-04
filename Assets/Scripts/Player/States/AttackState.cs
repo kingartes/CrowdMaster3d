@@ -6,8 +6,11 @@ using UnityEngine.Events;
 public class AttackState : State
 {
     [SerializeField] private StaminaAccumulator _staminaAccumulator;
+    [SerializeField] private Transform _shootPoint;
 
     private Ability _currentAbility;
+
+    public Transform ShootPoint => _shootPoint;
 
     public event UnityAction<IDamageable> CollisionDetected;
     public event UnityAction AbilityEnded;
