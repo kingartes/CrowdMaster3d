@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class AttackTransition : PlayerTransition
 {
-    public override void Enable()
-    { 
-    }
-
     public void Update()
     {
         if(Input.GetMouseButtonUp(0))

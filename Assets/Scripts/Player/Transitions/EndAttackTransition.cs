@@ -6,8 +6,9 @@ public class EndAttackTransition : PlayerTransition
 {
     [SerializeField] private AttackState _attackState;
 
-    public override void Enable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         _attackState.AbilityEnded += OnAbilityEnded;
     }
 
