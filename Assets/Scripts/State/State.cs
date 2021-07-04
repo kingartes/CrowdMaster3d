@@ -2,25 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class State : MonoBehaviour
+public class State : MonoBehaviour
 {
-    [SerializeField] private PlayerTransition[] _transitions;
+    [SerializeField] protected Transition[] _transitions;
 
     public Rigidbody Rigidbody { get; private set; }
     public Animator Animator { get; private set; }
 
     public void Enter(Rigidbody rigidbody, Animator animator)
     {
-        if(enabled == false)
+        if (enabled == false)
         {
             Rigidbody = rigidbody;
             Animator = animator;
 
             enabled = true;
 
-            foreach(var transition in _transitions)
+            foreach (var transition in _transitions)
             {
-                transition.enabled = true;
+                OnTransitionEnable(transition);
             }
         }
     }
@@ -29,7 +29,7 @@ public abstract class State : MonoBehaviour
     {
         if (enabled == true)
         {
-            foreach(var transition in _transitions)
+            foreach (var transition in _transitions)
             {
                 transition.enabled = false;
             }
@@ -37,9 +37,9 @@ public abstract class State : MonoBehaviour
         }
     }
 
-    public virtual State GetNextState()
+    public State GetNextState()
     {
-        foreach(var transition in _transitions)
+        foreach (var transition in _transitions)
         {
             if (transition.NeedTransit)
             {
@@ -48,5 +48,10 @@ public abstract class State : MonoBehaviour
         }
 
         return null;
+    }
+
+    protected virtual void OnTransitionEnable(Transition transition)
+    {
+        transition.enabled = true;
     }
 }

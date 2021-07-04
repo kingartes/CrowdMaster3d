@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class MoveTransition : PlayerTransition
 {
-    public override void Enable()
-    {    
-    }
-
     public void Update()
     {
         if (Input.GetMouseButtonDown(0))

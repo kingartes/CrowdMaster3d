@@ -2,55 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class EnemyState : MonoBehaviour
+public abstract class EnemyState : State
 {
-    [SerializeField] private EnemyTransition[] _transitions;
-
-    public Rigidbody Rigidbody { get; private set; }
-    public Animator Animator { get; private set; }
     public PlayerStateMachine Player { get; private set; }
 
     public void Enter(Rigidbody rigidbody, Animator animator, PlayerStateMachine player)
     {
-        if (enabled == false)
-        {
-            Rigidbody = rigidbody;
-            Animator = animator;
-            Player = player;
-
-            enabled = true;
-
-            foreach (var transition in _transitions)
-            {
-                transition.enabled = true;
-                transition.Init(Player);
-            }
-            
-        }
+        Player = player;
+        base.Enter(rigidbody, animator);
     }
 
-    public void Exit()
-    {
-        if (enabled == true)
-        {
-            foreach (var transition in _transitions)
-            {
-                transition.enabled = false;
-            }
-            enabled = false;
-        }
-    }
-
-    public virtual EnemyState GetNextState()
+    public new EnemyState GetNextState()
     {
         foreach (var transition in _transitions)
         {
             if (transition.NeedTransit)
             {
-                return transition.TargetState;
+                return (EnemyState)transition.TargetState;
             }
         }
 
         return null;
+    }
+
+    protected override void OnTransitionEnable(Transition transition)
+    {
+        base.OnTransitionEnable(transition);
+        ((EnemyTransition)transition).Init(Player);
     }
 }
